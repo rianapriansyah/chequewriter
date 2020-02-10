@@ -6,6 +6,20 @@ namespace codingtest
 {
     class Program
     {
+        static List<String> unitsMap = new List<String>() {
+                "", "ONE", "TWO",
+                "THREE", "FOUR", "FIVE",
+                "SIX", "SEVEN", "EIGHT",
+                "NINE", "TEN", "ELEVEN",
+                "TWELVE", "THIRTEEN", "FOURTEEN",
+                "FIFTEEN", "SIXTEEN", "SEVENTEEN",
+                "EIGHTEEN", "NINETEEN" };
+
+        static List<String> tensMap = new List<String>(){
+                "", "TEN", "TWENTY",
+                "THIRTY", "FORTY", "FIFTY",
+                "SIXTY", "SEVENTY", "EIGHTY",
+                "NINETY" };
         static void Main(string[] args)
         {
             do
@@ -64,124 +78,103 @@ namespace codingtest
 
         static void getComponent(string input)
         {
-            string[] single_digits = new string[]{ "zero", "one", "two",
-                                           "three", "four", "five",
-                                           "six", "seven", "eight",
-                                           "nine"};
+            String print = "";
 
-            string[] two_digits = new string[]{"", "ten", "eleven", "twelve",
-                                       "thirteen", "fourteen",
-                                       "fifteen", "sixteen", "seventeen",
-                                       "eighteen", "nineteen"};
-
-            string[] tens_multiple = new string[]{"", "", "twenty", "thirty",
-                                          "forty", "fifty","sixty",
-                                          "seventy", "eighty", "ninety"};
-
-            string[] tens_power = new string[] { "hundred", "thousand" };
-
-            var bucket = new List<String>();
-
-            String t = "";
-            var s = new List<String>();
-
-            for (int i = (input.Length - 1); i >= 0; i--)
+            int num = int.Parse(input);
+            if (num >= Math.Pow(10, 2) && num < Math.Pow(10, 3))
             {
-                String c = input[i].ToString();
-
-                if (!t.Equals(""))
+                print = getHundred(num);
+                print += " DOLLARS";
+            }
+            else if (num >= Math.Pow(10, 3) && num < Math.Pow(10, 5))
+            {
+                print += getThousand(num);
+                print += " DOLLARS";
+            }
+            else if (num >= Math.Pow(10, 5) && num < Math.Pow(10, 7))
+            {
+                int million = 100000;
+                int a = num / million;
+                print = unitsMap[a];
+                print += " MILLION ";
+                print += getThousand(num % million);
+                print += " DOLLARS";
+            }
+            else
+            {
+                if (num > 19 && num < 100)
                 {
-                    t = t.Insert(0, c);
+                    print = getTens(num);
                 }
                 else
                 {
-                    t = c;
+                    print = unitsMap[num];
                 }
 
-                if (t.Length == 3)
+                if (num == 1)
                 {
-                    bucket.Insert(0, t);
-                    t = "";
+                    print += " DOLLAR";
+                }
+                else
+                {
+                    print += " DOLLARS";
                 }
             }
-
-            foreach (string item in bucket)
-            {
-                Console.WriteLine(item);
-            }
+            Console.Write(print);
         }
 
-        static String getUnit(Int64 mainInput)
+        
+
+        static String getThousand(int num)
         {
             String output = "";
-            if (mainInput < Math.Pow(10, 1))
+            int thousand = 1000;
+            int a = num / thousand;
+            if (a > 19 && a < 1000)
             {
-                int x = (int)mainInput;
-                if (mainInput == 1)
-                {
-                    output = " DOLLAR";
-                }
-                else
-                {
-                    output = " DOLLARS";
-                }
+                output += getTens(a);
+                output += getThousand(num%thousand);
             }
-            else if (mainInput < Math.Pow(10, 2))
+            else
             {
-                output = " HUNDRED";
+                output += unitsMap[a];
+                output += " THOUSAND ";
+                output += getHundred(num % thousand);
             }
-            else if (mainInput < Math.Pow(10, 3))
-            {
-                output = " THOUSAND";
-            }
-
 
             return output;
         }
 
-
-        static String getUpToTensName(int input)
+        static String getHundred(int num)
         {
-
-            Dictionary<int, String> tens = new Dictionary<int, string>()
+            String hundred = "";
+            int a = num / 100;
+            hundred = unitsMap[a];
+            hundred += " HUNDRED AND ";
+            int b = num % 100;
+            if (b < 20)
             {
-                {0, ""},
-                {1, "ONE"},
-                {2, "TWO"},
-                {3, "THREE"},
-                {4, "FOUR"},
-                {5, "FIVE"},
-                {6, "SIX"},
-                {7, "SEVEN"},
-                {8, "EIGHT"},
-                {9, "NINE"},
-                {10, "TEN"},
-                {11, "ELEVEN"},
-                {12, "TWELVE"},
-                {13, "THIRTEEN"},
-                {14, "FOURTEEN"},
-                {15, "FIFTEEN"},
-                {16, "SIXTEEN"},
-                {17, "SEVENTEEN"},
-                {18, "EIGHTEEN"},
-                {19, "NINETEEN"},
-                {20, "TWENTY"},
-                {30, "THIRTY"},
-                {40, "FOURTY"},
-                {50, "FIFTY"},
-                {60, "SIXTY"},
-                {70, "SEVENTY"},
-                {80, "EIGHTY"},
-                {90, "NINETY"}
-            };
-
-            String result = "";
-            if (tens.ContainsKey(input))
+                hundred += unitsMap[b];
+            }
+            else
             {
-                tens.TryGetValue(input, out result);
+                hundred += getTens(b);
             }
 
-            return result;
+            return hundred;
+        }
+
+        static String getTens(int num)
+        {
+            String tens = "";
+
+            tens += tensMap[num / 10];
+            if (num % 10 > 0)
+            {
+                tens += " " + unitsMap[num % 10];
+            }
+
+            return tens;
         }
     }
 }
