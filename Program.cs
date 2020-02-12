@@ -22,16 +22,16 @@ namespace codingtest
                 "SIXTY", "SEVENTY", "EIGHTY",
                 "NINETY" };
 
-        static Dictionary<Int64, String> tenPowerMaps = new Dictionary<Int64, string>(){
-                {(Int64)Math.Pow(10, 21), "SEXTILLION"},
-                {(Int64)Math.Pow(10, 18), "QUINTILLION"},
-                {(Int64)Math.Pow(10, 15), "QUADRILLION"},
-                {(Int64)Math.Pow(10, 12), "TRILLION"},
-                {(Int64)Math.Pow(10, 9), "BILLION"},
-                {(Int64)Math.Pow(10, 6), "MILLION"},
-                {(Int64)Math.Pow(10, 3), "THOUSAND"},
-                {(Int64)Math.Pow(10, 2), "HUNDRED"},
-                {(Int64)Math.Pow(10, 1), "TEN"}
+        static Dictionary<Double, String> tenPowerMaps = new Dictionary<Double, string>(){
+                {(Double)Math.Pow(10, 21), "SEXTILLION"},
+                {(Double)Math.Pow(10, 18), "QUINTILLION"},
+                {(Double)Math.Pow(10, 15), "QUADRILLION"},
+                {(Double)Math.Pow(10, 12), "TRILLION"},
+                {(Double)Math.Pow(10, 9), "BILLION"},
+                {(Double)Math.Pow(10, 6), "MILLION"},
+                {(Double)Math.Pow(10, 3), "THOUSAND"},
+                {(Double)Math.Pow(10, 2), "HUNDRED"},
+                {(Double)Math.Pow(10, 1), "TEN"}
             };
 
         static void Main(string[] args)
@@ -115,13 +115,13 @@ namespace codingtest
             return print;
         }
 
-        static void getRecurrenceUnit(Int64 input, Int64 power, string outputFromPrev, int i)
+        static void getRecurrenceUnit(Double input, Double power, string outputFromPrev, int i)
         {
             String output = "";
             output += outputFromPrev;
-            Int64 maxPower = tenPowerMaps.ElementAt(0).Key;
+            Double maxPower = tenPowerMaps.ElementAt(0).Key;
 
-            Int64 currentPower = power;
+            Double currentPower = power;
 
             if (i != 0 && i < tenPowerMaps.Count)
             {
@@ -138,8 +138,11 @@ namespace codingtest
                 {
                     i += 1;
                     string currentUnit = tenPowerMaps.GetValueOrDefault(currentPower);
-                    Int64 left = input / currentPower;
-                    Int64 right = input % currentPower;
+                    Double l = input / currentPower;
+                    Double r = input % currentPower;
+
+                    Int64 left = (Int64)l;
+                    Int64 right = (Int64)r;
 
                     if (left > 99)
                     {
@@ -149,7 +152,13 @@ namespace codingtest
                     }
                     else
                     {
-                        output += unitsMap[(int)left];
+                        if(left < 20){
+                            output += unitsMap[(int)left];
+                        }
+                        else{
+                            output += getTens((int)left);
+                        }
+                        
                         output += " ";
                         output += currentUnit;
                     }
