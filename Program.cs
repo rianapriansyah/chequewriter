@@ -86,18 +86,14 @@ namespace codingtest
                 print = getHundred(num);
                 print += " DOLLARS";
             }
-            else if (num >= Math.Pow(10, 3) && num < Math.Pow(10, 5))
+            else if (num >= Math.Pow(10, 3) && num < Math.Pow(10, 6))
             {
                 print += getThousand(num);
                 print += " DOLLARS";
             }
             else if (num >= Math.Pow(10, 5) && num < Math.Pow(10, 7))
             {
-                int million = 100000;
-                int a = num / million;
-                print = unitsMap[a];
-                print += " MILLION ";
-                print += getThousand(num % million);
+                print += getMillion(num);
                 print += " DOLLARS";
             }
             else
@@ -123,23 +119,45 @@ namespace codingtest
             Console.Write(print);
         }
 
-        
+        static String getMillion(int num)
+        {
+            String output = "";
+            int million = 1000000;
+            int a = num / million;
+            if (a > 19 && a < million)
+            {
+                output += getTens(a);
+                output += getMillion(num % million);
+            }
+            else
+            {
+                output = unitsMap[a];
+                output += " MILLION ";
+                output += getMillion(num % million);
+            }
+
+            return output;
+        }
 
         static String getThousand(int num)
         {
             String output = "";
             int thousand = 1000;
-            int a = num / thousand;
-            if (a > 19 && a < 1000)
+            int left = num / thousand;
+            int right = num % thousand;
+
+            if (left > 19 && left < thousand)
             {
-                output += getTens(a);
-                output += getThousand(num%thousand);
+                if(left > 99){
+                    output += getHundred(left);
+                    output += getThousand(right);
+                }
             }
             else
             {
-                output += unitsMap[a];
+                output += unitsMap[left];
                 output += " THOUSAND ";
-                output += getHundred(num % thousand);
+                output += getHundred(right);
             }
 
             return output;
@@ -148,17 +166,19 @@ namespace codingtest
         static String getHundred(int num)
         {
             String hundred = "";
-            int a = num / 100;
-            hundred = unitsMap[a];
+            int left = num / 100;
+            int right = num % 100;
+
+            hundred = unitsMap[left];
             hundred += " HUNDRED AND ";
-            int b = num % 100;
-            if (b < 20)
+            
+            if (right < 20)
             {
-                hundred += unitsMap[b];
+                hundred += unitsMap[right];
             }
             else
             {
-                hundred += getTens(b);
+                hundred += getTens(right);
             }
 
             return hundred;
