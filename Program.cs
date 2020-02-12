@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace codingtest
 {
@@ -20,6 +21,19 @@ namespace codingtest
                 "THIRTY", "FORTY", "FIFTY",
                 "SIXTY", "SEVENTY", "EIGHTY",
                 "NINETY" };
+
+        static Dictionary<Int64, String> tenPowerMaps = new Dictionary<Int64, string>(){
+                {(Int64)Math.Pow(10, 21), "SEXTILLION"},
+                {(Int64)Math.Pow(10, 18), "QUINTILLION"},
+                {(Int64)Math.Pow(10, 15), "QUADRILLION"},
+                {(Int64)Math.Pow(10, 12), "TRILLION"},
+                {(Int64)Math.Pow(10, 9), "BILLION"},
+                {(Int64)Math.Pow(10, 6), "MILLION"},
+                {(Int64)Math.Pow(10, 3), "THOUSAND"},
+                {(Int64)Math.Pow(10, 2), "HUNDRED"},
+                {(Int64)Math.Pow(10, 1), "TEN"}
+            };
+
         static void Main(string[] args)
         {
             do
@@ -45,7 +59,7 @@ namespace codingtest
             }
             else
             {
-                string mainInput;
+                Int64 mainInput;
                 string cents;
                 //if user inputs with decimal point
                 if (input.IndexOf('.') > 0 || (input.IndexOf(',') > 0))
@@ -53,20 +67,23 @@ namespace codingtest
                     char[] delimiterChars = { ',', '.' };
                     string[] a = input.Split(delimiterChars);
 
-                    if(a.Length > 2 && a[1].Length > 2){
-                         Console.WriteLine(">> Input is not in a correct format");
-                         return;
+                    if (a.Length > 2 && a[1].Length > 2)
+                    {
+                        Console.WriteLine(">> Input is not in a correct format");
+                        return;
                     }
-                    mainInput = a[0];
+                    mainInput = Int64.Parse(a[0]);
                     cents = a[1];
 
-                    print += getComponent(mainInput);
+                    getRecurrenceUnit(mainInput, tenPowerMaps.ElementAt(0).Key, "", 0);
                     print += " AND ";
                     print += getCents(cents);
                 }
                 else
                 {
-                    print += getComponent(input);
+                    Int64 num = Int64.Parse(input);
+                    getRecurrenceUnit(num, tenPowerMaps.ElementAt(0).Key, "", 0);
+                    return;
                 }
             }
 
@@ -98,94 +115,107 @@ namespace codingtest
             return print;
         }
 
-        static string getComponent(string input)
+        static void getRecurrenceUnit(Int64 input, Int64 power, string outputFromPrev, int i)
         {
-            String print = "";
+            String output = "";
+            output += outputFromPrev;
+            Int64 maxPower = tenPowerMaps.ElementAt(0).Key;
 
-            int num = int.Parse(input);
-            if (num >= Math.Pow(10, 2) && num < Math.Pow(10, 3))
+            Int64 currentPower = power;
+
+            if (i != 0 && i < tenPowerMaps.Count)
             {
-                print = getHundred(num);
-                print += " DOLLARS";
+                currentPower = tenPowerMaps.ElementAt(i).Key;
             }
-            else if (num >= Math.Pow(10, 3) && num < Math.Pow(10, 6))
+
+            if (input > maxPower)
             {
-                print += getThousand(num);
-                print += " DOLLARS";
-            }
-            else if (num >= Math.Pow(10, 6) && num < Math.Pow(10, 9))
-            {
-                print += getMillion(num);
-                print += " DOLLARS";
+                Console.Write(">> Input is too large");
             }
             else
             {
-                if (num > 19 && num < 100)
+                if (input >= currentPower && input < power)
                 {
-                    print = getTens(num);
+                    i += 1;
+                    string currentUnit = tenPowerMaps.GetValueOrDefault(currentPower);
+                    Int64 left = input / currentPower;
+                    Int64 right = input % currentPower;
+
+                    if (left > 99)
+                    {
+                        output += getHundred((int)left);
+                        output += " ";
+                        output += currentUnit;
+                    }
+                    else
+                    {
+                        output += unitsMap[(int)left];
+                        output += " ";
+                        output += currentUnit;
+                    }
+
+                    output += " ";
+
+
+                    if (right > 999)
+                    {
+                        getRecurrenceUnit(right, currentPower, output, i);
+                        return;
+                    }
+                    else
+                    {
+                        if (right > 99)
+                        {
+                            output += getHundred((int)right);
+                            output += " DOLLARS";
+                        }
+                        else
+                        {
+                            if (right < 20)
+                            {
+                                output += unitsMap[(int)right];
+                            }
+                            else
+                            {
+                                output += getTens((int)right);
+                            }
+                            output += " DOLLARS";
+                        }
+                    }
+
+                    Console.Write(output);
+                    return;
+                }
+                else if (input < 100)
+                {
+                    if (input < 20)
+                    {
+                        output += unitsMap[(int)input];
+                    }
+                    else
+                    {
+                        output += getTens((int)input);
+                    }
+
+                    if (input == 1)
+                    {
+                        output += " DOLLAR";
+                    }
+                    else
+                    {
+                        output += " DOLLARS";
+                    }
+
+                    Console.Write(output);
+                    return;
                 }
                 else
                 {
-                    print = unitsMap[num];
-                }
-
-                if (num == 1)
-                {
-                    print += " DOLLAR";
-                }
-                else
-                {
-                    print += " DOLLARS";
+                    i += 1;
+                    getRecurrenceUnit(input, currentPower, output, i);
+                    return;
                 }
             }
-
-            return print;
-        }
-
-        static String getMillion(int num)
-        {
-            String output = "";
-            int million = 1000000;
-            int left = num / million;
-            int right = num % million;
-            if (left > 19 && left < million)
-            {
-                output += getTens(left);
-                output += getMillion(right);
-            }
-            else
-            {
-                output = unitsMap[left];
-                output += " MILLION ";
-                output += getThousand(right);
-            }
-
-            return output;
-        }
-
-        static String getThousand(int num)
-        {
-            String output = "";
-            int thousand = 1000;
-            int left = num / thousand;
-            int right = num % thousand;
-
-            if (left > 19 && left < thousand)
-            {
-                if (left > 99)
-                {
-                    output += getHundred(left);
-                    output += getThousand(right);
-                }
-            }
-            else
-            {
-                output += unitsMap[left];
-                output += " THOUSAND ";
-                output += getHundred(right);
-            }
-
-            return output;
         }
 
         static String getHundred(int num)
@@ -195,7 +225,16 @@ namespace codingtest
             int right = num % 100;
 
             hundred = unitsMap[left];
-            hundred += " HUNDRED AND ";
+
+            if (right == 0)
+            {
+                hundred += " HUNDRED";
+            }
+            else
+            {
+                hundred += " HUNDRED AND ";
+            }
+
 
             if (right < 20)
             {
