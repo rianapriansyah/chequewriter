@@ -38,14 +38,39 @@ namespace codingtest
 
         static void ChequeWriting(string input)
         {
+            string print = "";
             if (!isDigit(input))
             {
                 Console.WriteLine(">> Only digit is allowed");
             }
             else
             {
-                convertToString(input);
+                string mainInput;
+                string cents;
+                //if user inputs with decimal point
+                if (input.IndexOf('.') > 0 || (input.IndexOf(',') > 0))
+                {
+                    char[] delimiterChars = { ',', '.' };
+                    string[] a = input.Split(delimiterChars);
+
+                    if(a.Length > 2 && a[1].Length > 2){
+                         Console.WriteLine(">> Input is not in a correct format");
+                         return;
+                    }
+                    mainInput = a[0];
+                    cents = a[1];
+
+                    print += getComponent(mainInput);
+                    print += " AND ";
+                    print += getCents(cents);
+                }
+                else
+                {
+                    print += getComponent(input);
+                }
             }
+
+            Console.Write(print);
         }
 
         static bool isDigit(string input)
@@ -55,28 +80,25 @@ namespace codingtest
             return re.IsMatch(input) ? true : false;
         }
 
-        static void convertToString(string input)
+        static string getCents(string input)
         {
-            Int64 mainInput;
-            int cents;
-            //if user inputs with decimal point
-            if (input.IndexOf('.') > 0 || (input.IndexOf(',') > 0))
+            string print = "";
+            int cents = int.Parse(input);
+            print += getTens(cents);
+
+            if (cents == 1)
             {
-                char[] delimiterChars = { ',', '.' };
-                string[] a = input.Split(delimiterChars);
-
-                Int64.TryParse(a[0], out mainInput);
-                int.TryParse(a[1], out cents);
-
-                convertToString(input);
+                print += " CENT";
             }
             else
             {
-                getComponent(input);
+                print += " CENTS";
             }
+
+            return print;
         }
 
-        static void getComponent(string input)
+        static string getComponent(string input)
         {
             String print = "";
 
@@ -91,7 +113,7 @@ namespace codingtest
                 print += getThousand(num);
                 print += " DOLLARS";
             }
-            else if (num >= Math.Pow(10, 5) && num < Math.Pow(10, 7))
+            else if (num >= Math.Pow(10, 6) && num < Math.Pow(10, 9))
             {
                 print += getMillion(num);
                 print += " DOLLARS";
@@ -116,24 +138,26 @@ namespace codingtest
                     print += " DOLLARS";
                 }
             }
-            Console.Write(print);
+
+            return print;
         }
 
         static String getMillion(int num)
         {
             String output = "";
             int million = 1000000;
-            int a = num / million;
-            if (a > 19 && a < million)
+            int left = num / million;
+            int right = num % million;
+            if (left > 19 && left < million)
             {
-                output += getTens(a);
-                output += getMillion(num % million);
+                output += getTens(left);
+                output += getMillion(right);
             }
             else
             {
-                output = unitsMap[a];
+                output = unitsMap[left];
                 output += " MILLION ";
-                output += getMillion(num % million);
+                output += getThousand(right);
             }
 
             return output;
@@ -148,7 +172,8 @@ namespace codingtest
 
             if (left > 19 && left < thousand)
             {
-                if(left > 99){
+                if (left > 99)
+                {
                     output += getHundred(left);
                     output += getThousand(right);
                 }
@@ -171,7 +196,7 @@ namespace codingtest
 
             hundred = unitsMap[left];
             hundred += " HUNDRED AND ";
-            
+
             if (right < 20)
             {
                 hundred += unitsMap[right];
