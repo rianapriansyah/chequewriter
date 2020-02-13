@@ -1,4 +1,6 @@
-﻿using System;
+﻿//rian.apriansyah
+
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
@@ -56,12 +58,12 @@ namespace codingtest
             if (!isDigit(input))
             {
                 Console.WriteLine(">> Only digit is allowed");
+                return;
             }
             else
             {
-                Int64 mainInput;
+                Double mainInput;
                 string cents;
-                //if user inputs with decimal point
                 if (input.IndexOf('.') > 0 || (input.IndexOf(',') > 0))
                 {
                     char[] delimiterChars = { ',', '.' };
@@ -72,12 +74,25 @@ namespace codingtest
                         Console.WriteLine(">> Input is not in a correct format");
                         return;
                     }
-                    mainInput = Int64.Parse(a[0]);
-                    cents = a[1];
+                    else
+                    {
+                        if (a[1].Length > 2)
+                        {
+                            Console.WriteLine(">> Input is not in a correct format");
+                            return;
+                        }
+                        else
+                        {
+                            mainInput = Double.Parse(a[0]);
+                            cents = a[1];
 
-                    getRecurrenceUnit(mainInput, tenPowerMaps.ElementAt(0).Key, "", 0);
-                    print += " AND ";
-                    print += getCents(cents);
+                            getRecurrenceUnit(mainInput, tenPowerMaps.ElementAt(0).Key, "", 0);
+                            print += " AND ";
+                            print += getCents(cents);
+                            Console.Write(print);
+                        }
+
+                    }
                 }
                 else
                 {
@@ -86,8 +101,6 @@ namespace codingtest
                     return;
                 }
             }
-
-            Console.Write(print);
         }
 
         static bool isDigit(string input)
@@ -153,13 +166,15 @@ namespace codingtest
                     }
                     else
                     {
-                        if(left < 20){
+                        if (left < 20)
+                        {
                             output += unitsMap[(int)left];
                         }
-                        else{
+                        else
+                        {
                             output += getTens((int)left);
                         }
-                        
+
                         output += " ";
                         output += currentUnit;
                     }
