@@ -67,7 +67,7 @@ namespace codingtest
                     char[] delimiterChars = { ',', '.' };
                     string[] a = input.Split(delimiterChars);
 
-                    if (a.Length > 2 && a[1].Length > 2)
+                    if (a.Length > 2)
                     {
                         Console.WriteLine(">> Input is not in a correct format");
                         return;
@@ -81,7 +81,7 @@ namespace codingtest
                 }
                 else
                 {
-                    Int64 num = Int64.Parse(input);
+                    Double num = Double.Parse(input);
                     getRecurrenceUnit(num, tenPowerMaps.ElementAt(0).Key, "", 0);
                     return;
                 }
@@ -131,6 +131,7 @@ namespace codingtest
             if (input > maxPower)
             {
                 Console.Write(">> Input is too large");
+                return;
             }
             else
             {
