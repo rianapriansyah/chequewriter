@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace codingtest
 {
-    class Program
+    public class Program
     {
-        static List<String> unitsMap = new List<String>() {
+        public static List<String> unitsMap = new List<String>() {
                 "", "ONE", "TWO",
                 "THREE", "FOUR", "FIVE",
                 "SIX", "SEVEN", "EIGHT",
@@ -18,13 +18,13 @@ namespace codingtest
                 "FIFTEEN", "SIXTEEN", "SEVENTEEN",
                 "EIGHTEEN", "NINETEEN" };
 
-        static List<String> tensMap = new List<String>(){
+        public static List<String> tensMap = new List<String>(){
                 "", "TEN", "TWENTY",
                 "THIRTY", "FORTY", "FIFTY",
                 "SIXTY", "SEVENTY", "EIGHTY",
                 "NINETY" };
 
-        static Dictionary<Double, String> tenPowerMaps = new Dictionary<Double, string>(){
+        public static Dictionary<Double, String> tenPowerMaps = new Dictionary<Double, string>(){
                 {(Double)Math.Pow(10, 21), "SEXTILLION"},
                 {(Double)Math.Pow(10, 18), "QUINTILLION"},
                 {(Double)Math.Pow(10, 15), "QUADRILLION"},
@@ -36,29 +36,28 @@ namespace codingtest
                 {(Double)Math.Pow(10, 1), "TEN"}
             };
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             do
             {
                 Console.WriteLine();
-                Console.WriteLine("================================");
+                Console.WriteLine("==============ZZZ==================");
                 Console.WriteLine();
                 Console.Write("Your Input : ");
                 string input = Console.ReadLine();
-                ChequeWriting(input);
-                Console.WriteLine();
+                string output = ChequeWriting(input);
+                Console.WriteLine(output);
 
             }
             while (true);
         }
 
-        static void ChequeWriting(string input)
+        public static string ChequeWriting(string input)
         {
             string print = "";
             if (!isDigit(input))
             {
-                Console.WriteLine(">> Only digit is allowed");
-                return;
+                return ">> Only digit is allowed";
             }
             else
             {
@@ -71,50 +70,55 @@ namespace codingtest
 
                     if (a.Length > 2)
                     {
-                        Console.WriteLine(">> Input is not in a correct format");
-                        return;
+                        return ">> Input is not in a correct format";
                     }
                     else
                     {
                         if (a[1].Length > 2)
                         {
-                            Console.WriteLine(">> Input is not in a correct format");
-                            return;
+                            return ">> Input is not in a correct format";
                         }
                         else
                         {
                             mainInput = Double.Parse(a[0]);
                             cents = a[1];
 
-                            getRecurrenceUnit(mainInput, tenPowerMaps.ElementAt(0).Key, "", 0);
+                            print += getRecurrenceUnit(mainInput, tenPowerMaps.ElementAt(0).Key, "", 0);
                             print += " AND ";
                             print += getCents(cents);
-                            Console.Write(print);
                         }
-
                     }
                 }
                 else
                 {
                     Double num = Double.Parse(input);
-                    getRecurrenceUnit(num, tenPowerMaps.ElementAt(0).Key, "", 0);
-                    return;
+                    print += getRecurrenceUnit(num, tenPowerMaps.ElementAt(0).Key, "", 0);
                 }
             }
+
+            return print;
         }
 
-        static bool isDigit(string input)
+        public static bool isDigit(string input)
         {
             string pattern = @"\d";
             Regex re = new Regex(pattern);
             return re.IsMatch(input) ? true : false;
         }
 
-        static string getCents(string input)
+        public static string getCents(string input)
         {
             string print = "";
             int cents = int.Parse(input);
-            print += getTens(cents);
+
+            if (cents < 20)
+            {
+                print += getUnits((int)cents);
+            }
+            else
+            {
+                print += getTens((int)cents);
+            }
 
             if (cents == 1)
             {
@@ -128,7 +132,7 @@ namespace codingtest
             return print;
         }
 
-        static void getRecurrenceUnit(Double input, Double power, string outputFromPrev, int i)
+        public static string getRecurrenceUnit(Double input, Double power, string outputFromPrev, int i)
         {
             String output = "";
             output += outputFromPrev;
@@ -143,8 +147,7 @@ namespace codingtest
 
             if (input > maxPower)
             {
-                Console.Write(">> Input is too large");
-                return;
+                return ">> Input is too large";
             }
             else
             {
@@ -168,7 +171,7 @@ namespace codingtest
                     {
                         if (left < 20)
                         {
-                            output += unitsMap[(int)left];
+                            output += getUnits((int)left);
                         }
                         else
                         {
@@ -184,8 +187,8 @@ namespace codingtest
 
                     if (right > 999)
                     {
-                        getRecurrenceUnit(right, currentPower, output, i);
-                        return;
+                        output += getRecurrenceUnit(right, currentPower, output, i);
+                        return output;
                     }
                     else
                     {
@@ -198,7 +201,7 @@ namespace codingtest
                         {
                             if (right < 20)
                             {
-                                output += unitsMap[(int)right];
+                                output += getUnits((int)right);
                             }
                             else
                             {
@@ -207,15 +210,13 @@ namespace codingtest
                             output += " DOLLARS";
                         }
                     }
-
-                    Console.Write(output);
-                    return;
+                    return output;
                 }
                 else if (input < 100)
                 {
                     if (input < 20)
                     {
-                        output += unitsMap[(int)input];
+                        output += getUnits((int)input);
                     }
                     else
                     {
@@ -231,25 +232,24 @@ namespace codingtest
                         output += " DOLLARS";
                     }
 
-                    Console.Write(output);
-                    return;
+                    return output;
                 }
                 else
                 {
                     i += 1;
-                    getRecurrenceUnit(input, currentPower, output, i);
-                    return;
+                    output += getRecurrenceUnit(input, currentPower, output, i);
+                    return output;
                 }
             }
         }
 
-        static String getHundred(int num)
+        public static String getHundred(int num)
         {
             String hundred = "";
             int left = num / 100;
             int right = num % 100;
 
-            hundred = unitsMap[left];
+            hundred = getUnits(left);
 
             if (right == 0)
             {
@@ -263,7 +263,7 @@ namespace codingtest
 
             if (right < 20)
             {
-                hundred += unitsMap[right];
+                hundred += getUnits(right);
             }
             else
             {
@@ -273,17 +273,24 @@ namespace codingtest
             return hundred;
         }
 
-        static String getTens(int num)
+        public static string getTens(int num)
         {
             String tens = "";
 
             tens += tensMap[num / 10];
             if (num % 10 > 0)
             {
-                tens += " " + unitsMap[num % 10];
+                tens += " " + getUnits(num % 10);
             }
 
             return tens;
+        }
+
+        public static string getUnits(int num)
+        {
+            String units = "";
+            units += unitsMap[num];
+            return units;
         }
     }
 }
