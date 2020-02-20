@@ -57,13 +57,14 @@ namespace codingtest
             string print = "";
             if (!isDigit(input))
             {
-                return ">> Only digit is allowed";
+                return ">> Only digit and decimal separator are allowed";
             }
             else
             {
-                Double mainInput;
-                string cents;
-                if (input.IndexOf('.') > 0 || (input.IndexOf(',') > 0))
+                Double mainInput = 0;
+                int cents = 0;
+
+                if (input.Contains(",") || input.Contains("."))
                 {
                     char[] delimiterChars = { ',', '.' };
                     string[] a = input.Split(delimiterChars);
@@ -72,27 +73,42 @@ namespace codingtest
                     {
                         return ">> Input is not in a correct format";
                     }
+                    else if (a[1].Length > 2)
+                    {
+                        return ">> Input is not in a correct format";
+                    }
                     else
                     {
-                        if (a[1].Length > 2)
-                        {
-                            return ">> Input is not in a correct format";
-                        }
-                        else
-                        {
-                            mainInput = Double.Parse(a[0]);
-                            cents = a[1];
 
+                        Double.TryParse(a[0], out mainInput);
+                        int.TryParse(a[1], out cents);
+
+                        if (mainInput == 0 && cents == 0)
+                        {
+                            return ">> Zero Value";
+                        }
+
+                        if (cents != 0)
+                        {
                             print += getRecurrenceUnit(mainInput, tenPowerMaps.ElementAt(0).Key, "", 0);
                             print += " AND ";
                             print += getCents(cents);
+
+                            return print;
                         }
+
+                        print += getRecurrenceUnit(mainInput, tenPowerMaps.ElementAt(0).Key, "", 0);
                     }
                 }
                 else
                 {
-                    Double num = Double.Parse(input);
-                    print += getRecurrenceUnit(num, tenPowerMaps.ElementAt(0).Key, "", 0);
+                    Double.TryParse(input, out mainInput);
+                    if (mainInput == 0)
+                    {
+                        return ">> Zero Value";
+                    }
+
+                    print += getRecurrenceUnit(mainInput, tenPowerMaps.ElementAt(0).Key, "", 0);
                 }
             }
 
@@ -101,23 +117,22 @@ namespace codingtest
 
         public static bool isDigit(string input)
         {
-            string pattern = @"\d";
+            string pattern = "^[0-9,.]*$";
             Regex re = new Regex(pattern);
             return re.IsMatch(input) ? true : false;
         }
 
-        public static string getCents(string input)
+        public static string getCents(int cents)
         {
             string print = "";
-            int cents = int.Parse(input);
 
             if (cents < 20)
             {
-                print += getUnits((int)cents);
+                print += getUnits(cents);
             }
             else
             {
-                print += getTens((int)cents);
+                print += getTens(cents);
             }
 
             if (cents == 1)

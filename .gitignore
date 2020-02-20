@@ -4,8 +4,8 @@
 
 ### DotnetCore ###
 # .NET Core build folders
-/bin
-/obj
+src/bin/
+src/obj/
 
 # Common node modules locations
 /node_modules
@@ -15,3 +15,18 @@
 # End of https://www.gitignore.io/api/dotnetcore
 .vscode/launch.json
 .vscode/tasks.json
+
+*.dll
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+src/bin/Debug/netcoreapp3.1/*.dll
