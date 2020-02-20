@@ -1,9 +1,11 @@
 using System;
 using Xunit;
-using codingtest;
+using chequewriter.src;
 using System.Collections.Generic;
+using System.Text;
+using System.IO;
 
-namespace test
+namespace chequewriter.test
 {
     public class UnitTest1
     {
@@ -46,8 +48,20 @@ namespace test
         {
             for (int i = 0; i < 10; i++)
             {
-                bool output = Program.isDigit(i.ToString());
+                bool output = Function.isDigit(i.ToString() , i.ToString());
                 Assert.True(output);
+            }
+        }
+
+        [Fact]
+        public void TestValidateDigitFalse()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                string path = Path.GetRandomFileName();
+                path = path.Replace(".", "");
+                bool output = Function.isDigit(i+path, i+path);
+                Assert.True(output, "input : " + path + " is not acceptable");
             }
         }
 
@@ -57,18 +71,8 @@ namespace test
             foreach (var pair in tenMaps)
             {
                 String expected = pair.Value;
-                String output = Program.getUnits(pair.Key);
+                String output = Function.getUnits(pair.Key);
                 Assert.Equal(expected, output);
-            }
-        }
-
-        [Fact]
-        public void TestGetHundred()
-        {
-            for (int i = 0; i < 99; i++)
-            {
-                bool output = Program.isDigit(i.ToString());
-                Assert.True(output);
             }
         }
 
@@ -76,17 +80,31 @@ namespace test
         public void TestGetCents()
         {
             string expected = "ONE CENT";
-            string output = Program.getCents("1");
+            string output = Function.getCents(1);
             Assert.Equal(expected, output);
         }
 
         [Fact]
-        public void TestRecurrenceUnit(){
-            foreach(var pair in tenPowerMaps){
+        public void TestRecurrenceUnit()
+        {
+            foreach (var pair in tenPowerMaps)
+            {
                 String expectedToContain = pair.Value;
                 String output = Program.ChequeWriting(pair.Key.ToString());
 
                 Assert.True(output.Contains(expectedToContain));
+            }
+        }
+
+        [Fact]
+        public void TestRecurrenceUnitFalse()
+        {
+            foreach (var pair in tenPowerMaps)
+            {
+                String expectedToContain = pair.Value;
+                String output = Program.ChequeWriting(pair.Key + 1.ToString());
+
+                Assert.False(output.Contains(expectedToContain), "input is bigger than the max limit");
             }
         }
     }
