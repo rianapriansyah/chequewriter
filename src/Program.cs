@@ -32,24 +32,14 @@ namespace chequewriter.src
 
             if (input.Contains(",") || input.Contains("."))
             {
-                char[] delimiterChars = { ',', '.' };
-                string[] a = input.Split(delimiterChars);
-
-                if (!Function.isDigit(a[0], a[1]))
-                {
-                    return ">> Only digit and decimal separator are allowed";
-                }
-
-                if (a.Length > 2)
-                {
-                    return ">> Input is not in a correct format";
-                }
-                else if (a[1].Length > 2)
+                if (!Function.isValid(input))
                 {
                     return ">> Input is not in a correct format";
                 }
                 else
                 {
+                    char[] delimiterChars = { ',', '.' };
+                    string[] a = input.Split(delimiterChars);
 
                     Double.TryParse(a[0], out mainInput);
                     int.TryParse(a[1], out cents);
@@ -73,9 +63,9 @@ namespace chequewriter.src
             }
             else
             {
-                if (!Function.isDigit(input, ""))
+                if (!Function.isValid(input))
                 {
-                    return ">> Only digit and decimal separator are allowed";
+                    return ">> Input is not in a correct format";
                 }
 
                 Double.TryParse(input, out mainInput);

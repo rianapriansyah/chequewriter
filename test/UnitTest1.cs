@@ -48,7 +48,7 @@ namespace chequewriter.test
         {
             for (int i = 0; i < 10; i++)
             {
-                bool output = Function.isDigit(i.ToString() , i.ToString());
+                bool output = Function.isValid(i.ToString());
                 Assert.True(output);
             }
         }
@@ -60,8 +60,19 @@ namespace chequewriter.test
             {
                 string path = Path.GetRandomFileName();
                 path = path.Replace(".", "");
-                bool output = Function.isDigit(i+path, i+path);
+                bool output = Function.isValid(i + path);
                 Assert.True(output, "input : " + path + " is not acceptable");
+            }
+        }
+
+        [Fact]
+        public void TestValidateCents()
+        {
+            for (int i = 0; i < 101; i++)
+            {
+                string x = "1,";
+                bool output = Function.isValid(x+i.ToString());
+                Assert.True(output, "input : " + i + " is not acceptable as cents");
             }
         }
 

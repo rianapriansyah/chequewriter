@@ -35,6 +35,27 @@ namespace chequewriter.src
                 {(Double)Math.Pow(10, 1), "TEN"}
             };
 
+        public static bool isValid(string input)
+        {
+            if (input.Contains(",") || input.Contains("."))
+            {
+                char[] delimiterChars = { ',', '.' };
+                string[] a = input.Split(delimiterChars);
+
+                if (a.Length > 2)
+                {
+                    return false;
+                }
+                else if (a[1].Length > 2)
+                {
+                    return false;
+                }
+
+                return isDigit(a[0], a[1]);
+            }
+
+            return isDigit(input, "");
+        }
         public static bool isDigit(string mainInput, string cents)
         {
             Double x = 0;
@@ -43,10 +64,17 @@ namespace chequewriter.src
             try
             {
                 x = Double.Parse(mainInput);
+                if (cents != "")
+                {
+                    y = int.Parse(cents);
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                if (ex.Message != "")
+                {
+                    return false;
+                }
             }
 
             return true;
