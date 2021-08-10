@@ -7,8 +7,7 @@ namespace chequewriter.src
 {
     public class Function
     {
-
-        static List<String> unitsMap = new List<String>() {
+        static List<string> unitsMap = new List<string>() {
                 "", "ONE", "TWO",
                 "THREE", "FOUR", "FIVE",
                 "SIX", "SEVEN", "EIGHT",
@@ -17,27 +16,26 @@ namespace chequewriter.src
                 "FIFTEEN", "SIXTEEN", "SEVENTEEN",
                 "EIGHTEEN", "NINETEEN" };
 
-        static List<String> tensMap = new List<String>(){
+        static List<string> tensMap = new List<string>(){
                 "", "TEN", "TWENTY",
                 "THIRTY", "FORTY", "FIFTY",
                 "SIXTY", "SEVENTY", "EIGHTY",
                 "NINETY" };
 
-        static Dictionary<Double, String> tenPowerMaps = new Dictionary<Double, string>(){
-                {(Double)Math.Pow(10, 21), "SEXTILLION"},
-                {(Double)Math.Pow(10, 18), "QUINTILLION"},
-                {(Double)Math.Pow(10, 15), "QUADRILLION"},
-                {(Double)Math.Pow(10, 12), "TRILLION"},
-                {(Double)Math.Pow(10, 9), "BILLION"},
-                {(Double)Math.Pow(10, 6), "MILLION"},
-                {(Double)Math.Pow(10, 3), "THOUSAND"},
-                {(Double)Math.Pow(10, 2), "HUNDRED"},
-                {(Double)Math.Pow(10, 1), "TEN"}
+        static Dictionary<double, string> tenPowerMaps = new Dictionary<double, string>(){
+                {(double)Math.Pow(10, 21), "SEXTILLION"},
+                {(double)Math.Pow(10, 18), "QUINTILLION"},
+                {(double)Math.Pow(10, 15), "QUADRILLION"},
+                {(double)Math.Pow(10, 12), "TRILLION"},
+                {(double)Math.Pow(10, 9), "BILLION"},
+                {(double)Math.Pow(10, 6), "MILLION"},
+                {(double)Math.Pow(10, 3), "THOUSAND"},
+                {(double)Math.Pow(10, 2), "HUNDRED"},
+                {(double)Math.Pow(10, 1), "TEN"}
             };
 
-        public static bool isValid(string input)
+        public static bool IsValid(string input)
         {
-
             if (input.Contains("-"))
             {
                 return false;
@@ -69,8 +67,8 @@ namespace chequewriter.src
         }
         static bool ValidateDollarValue(string mainInput)
         {
-            Double x = 0;
-            Double maxPower = tenPowerMaps.ElementAt(0).Key;
+            double x = 0;
+            double maxPower = tenPowerMaps.ElementAt(0).Key;
             if (mainInput == "")
             {
                 return true;
@@ -78,7 +76,7 @@ namespace chequewriter.src
 
             try
             {
-                x = Double.Parse(mainInput);
+                x = double.Parse(mainInput);
 
                 if (x >= maxPower)
                 {
@@ -149,13 +147,13 @@ namespace chequewriter.src
             return print;
         }
 
-        public static string getRecurrenceUnit(Double input, Double power, string outputFromPrev, int i)
+        public static string getRecurrenceUnit(double input, double power, string outputFromPrev, int i)
         {
-            String output = "";
+            string output = "";
             output += outputFromPrev;
-            Double maxPower = tenPowerMaps.ElementAt(0).Key;
+            double maxPower = tenPowerMaps.ElementAt(0).Key;
 
-            Double currentPower = power;
+            double currentPower = power;
 
             if (i != 0 && i < tenPowerMaps.Count)
             {
@@ -172,8 +170,8 @@ namespace chequewriter.src
                 {
                     i += 1;
                     string currentUnit = tenPowerMaps.GetValueOrDefault(currentPower);
-                    Double l = input / currentPower;
-                    Double r = input % currentPower;
+                    double l = input / currentPower;
+                    double r = input % currentPower;
 
                     Int64 left = (Int64)l;
                     Int64 right = (Int64)r;
@@ -263,9 +261,9 @@ namespace chequewriter.src
             }
         }
 
-        static String getHundred(int num)
+        static string getHundred(int num)
         {
-            String hundred = "";
+            string hundred = "";
             int left = num / 100;
             int right = num % 100;
 
@@ -295,7 +293,7 @@ namespace chequewriter.src
 
         static string getTens(int num)
         {
-            String tens = "";
+            string tens = "";
 
             tens += tensMap[num / 10];
             if (num % 10 > 0)
@@ -308,12 +306,12 @@ namespace chequewriter.src
 
         static string getUnits(int num)
         {
-            String units = "";
+            string units = "";
             units += unitsMap[num];
             return units;
         }
 
-        static string tidyUpTheString(string input)
+        static string tidyUpThestring(string input)
         {
             string pattern = "\\s+";
             string replacement = " ";
@@ -326,12 +324,12 @@ namespace chequewriter.src
         {
             string print = "";
 
-            Double mainInput = 0;
+            double mainInput = 0;
             int cents = 0;
 
             if (input.Contains(",") || input.Contains("."))
             {
-                if (!Function.isValid(input))
+                if (!IsValid(input))
                 {
                     return ">> Input is not in a correct format";
                 }
@@ -345,12 +343,12 @@ namespace chequewriter.src
                     double x = double.Parse(input);
                     x = Math.Round(x, 2);
 
-                    input = String.Format("{0:0.00}", x);
+                    input = string.Format("{0:0.00}", x);
 
                     char[] delimiterChars = { ',', '.' };
                     string[] a = input.Split(delimiterChars);
 
-                    Double.TryParse(a[0], out mainInput);
+                    double.TryParse(a[0], out mainInput);
                     int.TryParse(a[1], out cents);
 
                     if (mainInput == 0 && cents == 0)
@@ -360,31 +358,31 @@ namespace chequewriter.src
 
                     if (mainInput != 0)
                     {
-                        print += Function.getRecurrenceUnit(mainInput, Function.tenPowerMaps.ElementAt(0).Key, "", 0);
+                        print += getRecurrenceUnit(mainInput, tenPowerMaps.ElementAt(0).Key, "", 0);
                         if (cents != 0)
                         {
                             print += " AND ";
                             print += Function.getCents(cents);
                         }
-                        print = tidyUpTheString(print);
+                        print = tidyUpThestring(print);
                         return print;
                     }
                     else
                     {
                         print += Function.getCents(cents);
-                        print = tidyUpTheString(print);
+                        print = tidyUpThestring(print);
                         return print;
                     }
                 }
             }
             else
             {
-                if (!Function.isValid(input))
+                if (!IsValid(input))
                 {
                     return ">> Input is not in a correct format";
                 }
 
-                Double.TryParse(input, out mainInput);
+                double.TryParse(input, out mainInput);
                 if (mainInput == 0)
                 {
                     return ">> Zero Value";
@@ -392,7 +390,7 @@ namespace chequewriter.src
 
                 print += Function.getRecurrenceUnit(mainInput, Function.tenPowerMaps.ElementAt(0).Key, "", 0);
             }
-            print = tidyUpTheString(print);
+            print = tidyUpThestring(print);
             return print;
         }
     }

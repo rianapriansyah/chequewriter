@@ -8,14 +8,19 @@ namespace chequewriter.src
     {
         public static void Main(string[] args)
         {
-            Function func = new Function();
+            LoopFunction func = new LoopFunction();
             do
             {
                 Console.WriteLine();
-                Console.WriteLine("==============ZZZZ==================");
+                Console.WriteLine("Z=================ZZZZ=================Z");
                 Console.WriteLine();
                 Console.Write("Your Input : ");
                 string input = Console.ReadLine();
+                if (input.Equals("clear"))
+                {
+                    Console.Clear();
+                    continue;
+                }
                 string output = func.ChequeWriting(input);
                 Console.WriteLine(output);
             }

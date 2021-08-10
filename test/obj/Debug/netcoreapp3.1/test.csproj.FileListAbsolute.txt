@@ -89,7 +89,6 @@ C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\bin\Debug\netcoreapp3.1\zh-Hant
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.VisualStudio.TestPlatform.Common.resources.dll
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\bin\Debug\netcoreapp3.1\codingtest.dll
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\bin\Debug\netcoreapp3.1\codingtest.pdb
-C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\obj\Debug\netcoreapp3.1\test.csprojAssemblyReference.cache
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\obj\Debug\netcoreapp3.1\test.AssemblyInfoInputs.cache
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\obj\Debug\netcoreapp3.1\test.AssemblyInfo.cs
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\obj\Debug\netcoreapp3.1\test.csproj.CopyComplete
@@ -97,3 +96,9 @@ C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\obj\Debug\netcoreapp3.1\test.dl
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\obj\Debug\netcoreapp3.1\test.pdb
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\bin\Debug\netcoreapp3.1\Castle.Core.dll
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\bin\Debug\netcoreapp3.1\Moq.dll
+C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\bin\Debug\netcoreapp3.1\codingtest.deps.json
+C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\bin\Debug\netcoreapp3.1\codingtest.runtimeconfig.json
+C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\bin\Debug\netcoreapp3.1\codingtest.runtimeconfig.dev.json
+C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\obj\Debug\netcoreapp3.1\test.csproj.AssemblyReference.cache
+C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\obj\Debug\netcoreapp3.1\test.csproj.CoreCompileInputs.cache
+C:\Users\rian_a\CDC\dotnetcore\chequewriter\test\obj\Debug\netcoreapp3.1\test.genruntimeconfig.cache

@@ -15,8 +15,10 @@ C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\bin\Debug\netcoreapp3.1\codingte
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\bin\Debug\netcoreapp3.1\codingtest.runtimeconfig.dev.json
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\bin\Debug\netcoreapp3.1\codingtest.dll
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\bin\Debug\netcoreapp3.1\codingtest.pdb
-C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\obj\Debug\netcoreapp3.1\codingtest.csprojAssemblyReference.cache
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\obj\Debug\netcoreapp3.1\codingtest.AssemblyInfoInputs.cache
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\obj\Debug\netcoreapp3.1\codingtest.AssemblyInfo.cs
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\obj\Debug\netcoreapp3.1\codingtest.dll
 C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\obj\Debug\netcoreapp3.1\codingtest.pdb
+C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\obj\Debug\netcoreapp3.1\codingtest.csproj.AssemblyReference.cache
+C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\obj\Debug\netcoreapp3.1\codingtest.csproj.CoreCompileInputs.cache
+C:\Users\rian_a\CDC\dotnetcore\chequewriter\src\obj\Debug\netcoreapp3.1\codingtest.genruntimeconfig.cache
